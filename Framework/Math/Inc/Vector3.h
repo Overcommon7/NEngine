@@ -29,9 +29,7 @@ namespace NEng
 		explicit constexpr Vector3(float f) noexcept : Vector3(f, f, f) {}
 		constexpr Vector3(float x, float y, float z) noexcept : x{ x }, y{ y }, z{ z } {}
 
-		constexpr Vector3& operator=(const Vector3& vec) = default;
-		constexpr bool operator==(const Vector3& vec) const { return equals(x, vec.x) && equals(y, vec.y) && equals(z, vec.z); }
-		constexpr bool operator!=(const Vector3& vec) const { return !(equals(x, vec.x) && equals(y, vec.y) && equals(z, vec.z)); }
+		Vector3& operator=(const Vector3& vec) = default;
 
 		constexpr Vector3 operator-() const { return { -x, -y, -z }; }
 		constexpr Vector3 operator+(Vector3 b) const { return { x + b.x, y + b.y, z + b.z }; }
@@ -72,19 +70,19 @@ namespace NEng
 		inline Vector3 Lerp(const Vector3& vec, const float& t) const
 		{
 			return Vector3(
-				lerp(x, vec.x, t),
-				lerp(y, vec.y, t),
-				lerp(z, vec.z, t));
+				std::lerp(x, vec.x, t),
+				std::lerp(y, vec.y, t),
+				std::lerp(z, vec.z, t));
 		}
 
 		inline float Distance(const Vector3& b)
 		{
-			return sqrt(abs((x - b.x) * (x - b.x) + (y - b.y) * (y - b.y) + (z - b.z) * (z - b.z)));
+			return sqrt(std::abs((x - b.x) * (x - b.x) + (y - b.y) * (y - b.y) + (z - b.z) * (z - b.z)));
 		}
 
 		inline float DistanceSqr(const Vector3& b)
 		{
-			return abs((x - b.x) * (x - b.x) + (y - b.y) * (y - b.y) + (z - b.z) * (z - b.z));
+			return std::abs((x - b.x) * (x - b.x) + (y - b.y) * (y - b.y) + (z - b.z) * (z - b.z));
 		}
 	};
 }

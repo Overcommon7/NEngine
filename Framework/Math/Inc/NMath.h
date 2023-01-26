@@ -4,36 +4,36 @@
 namespace NEng
 {
 	template <typename T> 
-	inline static constexpr T lerp(const T& a, const T& b, const T& t)
+	inline constexpr T lerp(const T& a, const T& b, const T& t)
 	{
 		return a + t * (b - a);
 	}
 
 	template <typename T>
-	inline static constexpr T abs(const T& a)
+	inline constexpr T abs(const T& a)
 	{
 		return a < 0 ? -a : a;
 	}
 
-	inline static constexpr float equals(const float& a, const float& b)
+	inline constexpr float equals(const float& a, const float& b)
 	{
 		return abs(a - b) <= 0.0001f;
 	}
 
 	template <typename T>
-	inline static constexpr float	min(const float& a, const float& b)
+	inline constexpr float min(const float& a, const float& b)
 	{
 		return a < b ? a : b;
 	}
 
 	template <typename T>
-	inline static constexpr float max(const float& a, const float& b)
+	inline constexpr float max(const float& a, const float& b)
 	{
 		return a > b ? a : b;
 	}
 
 	template <typename T>
-	inline static constexpr float clamp(const float& num, const float& min, const float& max)
+	inline constexpr float clamp(const float& num, const float& min, const float& max)
 	{
 		if (num > max) return max;
 		if (num < min) return min;
@@ -41,7 +41,7 @@ namespace NEng
 	}
 
 	template<typename T>
-	inline static constexpr T sqr(const T& value)
+	inline constexpr T sqr(const T& value)
 	{
 		return value * value;
 	}

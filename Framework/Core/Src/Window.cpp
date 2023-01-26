@@ -68,10 +68,14 @@ void Window::PrrocessMessage()
 
 	while (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
 	{
+		if (msg.message == WM_QUIT)
+		{
+			isActive = false;
+			return;
+		}
+			
+
 		TranslateMessage(&msg);
 		DispatchMessage(&msg);
-
-		if (msg.message == WM_QUIT)
-			isActive = false;
 	}
 }

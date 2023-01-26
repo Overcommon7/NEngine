@@ -20,10 +20,19 @@
     <ClInclude Include="Inc\Graphics.h">
       <Filter>Inc</Filter>
     </ClInclude>
+    <ClInclude Include="Inc\Colors.h">
+      <Filter>Src</Filter>
+    </ClInclude>
+    <ClInclude Include="Inc\GraphicsSystem.h">
+      <Filter>Src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\Precompiled.cpp">
       <Filter>Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\GraphicsSystem.cpp">
+      <Filter>Inc</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

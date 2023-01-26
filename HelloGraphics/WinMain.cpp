@@ -6,7 +6,7 @@ int CALLBACK WinMain(
     _In_ LPSTR lpCmdLine,
     _In_ int nShowCmd)
 {
-    NEng::App::AppConfig::AppName = L"HelloWindow";
+    NEng::App::AppConfig::AppName = L"ColorChange";
     NEng::App::Run();
     return 0;
 }
