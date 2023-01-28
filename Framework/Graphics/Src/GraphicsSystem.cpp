@@ -49,6 +49,7 @@ void NEng::GraphicsSystem::Initatilze(HWND window, bool fullscreen)
         &mImmediateContext
     );
 
+    mSwapChain->GetDesc(&mSwapChainDesc);
     Resize(GetBackBufferWidth(), GetBackBufferHeight());
     sWindowMessageHandler.Hook(window, GraphicsSystemMessageHandler);
 }
@@ -170,7 +171,14 @@ float NEng::GraphicsSystem::GetbackBufferRatio() const
 
 LRESULT NEng::GraphicsSystem::GraphicsSystemMessageHandler(HWND window, UINT message, WPARAM wParam, LPARAM lParam)
 {
-    return LRESULT();
+    if (sGraphicsSystem && message == WM_SIZE)
+    {
+        const uint32_t width = (uint32_t)(LOWORD(lParam));
+        const uint32_t height  = (uint32_t)(HIWORD(lParam));
+        sGraphicsSystem->Resize(width, height);
+    }
+
+    return sWindowMessageHandler.FowardMessage(window,  message,  wParam,  lParam);
 }
 
 ID3D11Device* NEng::GetDevice()

@@ -7,8 +7,9 @@ int CALLBACK WinMain(
     _In_ LPSTR lpCmdLine,
     _In_ int nShowCmd)
 {
-    NEng::App::AppConfig::AppName = L"ColorChange";
-    NEng::App::AddState<GameState>("GameState");
+    NEng::App::AppConfig::AppName = L"HelloShapes";
+    App::AddState<Hexagon>("TriangleState");
+    App::AddState<DoubleSqaureState>("SquareState");
     NEng::App::Run();
     return 0;
 }

@@ -31,9 +31,9 @@ namespace NEng
         static inline Input::KeyCode closeKey = Input::KeyCode::ESCAPE;
         static void Run();
         static void Quit();
-        void ChangeState(const std::string& stateName);
+        static void ChangeState(const std::string& stateName);
         template<class StateType>
-        inline void AddState(const std::string& stateName)
+        inline static void AddState(const std::string& stateName)
         {
             static_assert(std::is_base_of_v<AppState, StateType>, "AddState must be of type AppState");
 

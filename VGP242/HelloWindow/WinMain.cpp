@@ -7,6 +7,7 @@ int CALLBACK WinMain(
     _In_ int nShowCmd)
 {
 	NEng::App::AppConfig::AppName = L"HelloWindow";
+    NEng::App::AddState
 	NEng::App::Run();
     return 0;
 }

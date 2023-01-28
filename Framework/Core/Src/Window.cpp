@@ -62,7 +62,7 @@ void Window::Terminate()
 	instance = nullptr;
 }
 
-void Window::PrrocessMessage()
+void Window::ProcessMessage()
 {
 	MSG msg;
 

@@ -57,7 +57,7 @@ namespace NEng
 		DXGI_SWAP_CHAIN_DESC mSwapChainDesc{};
 		D3D11_VIEWPORT mViewport{};
 
-		Color mClearColor = Colors::Red;
+		Color mClearColor = Colors::Black;
 		UINT mVsync = 1;
 
 	public:

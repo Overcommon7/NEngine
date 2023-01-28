@@ -16,10 +16,15 @@ namespace NEng
 		Input::InputSystem::StaticInitialize(window.wnd);
 		GraphicsSystem::StaticInitialize(window.wnd, false);
 		auto input = Input::InputSystem::Get();
+
+		mCurrentState->Initialize();
+
 		isRunning = true;
 		while (isRunning)
 		{
-			window.PrrocessMessage();
+			window.ProcessMessage();
+			input->Update();
+
 			if (!window.isActive || input->IsKeyPressed(closeKey))
 			{
 				Quit();
@@ -39,13 +44,6 @@ namespace NEng
 			if (deltaTime < 0.5f)
 			{
 				mCurrentState->Update(deltaTime);
-
-				if (input->IsKeyPressed(Input::KeyCode::ONE)) gs->SetClearColor(Colors::Black);
-				else if (input->IsKeyPressed(Input::KeyCode::TWO)) gs->SetClearColor(Colors::Red);
-				else if (input->IsKeyPressed(Input::KeyCode::THREE)) gs->SetClearColor(Colors::Green);
-				else if (input->IsKeyPressed(Input::KeyCode::FOUR)) gs->SetClearColor(Colors::Blue);
-				else if (input->IsKeyPressed(Input::KeyCode::FIVE)) gs->SetClearColor(Colors::Yellow);
-				else if (input->IsKeyPressed(Input::KeyCode::SIX)) gs->SetClearColor(Colors::Purple);
 			}
 
 			
