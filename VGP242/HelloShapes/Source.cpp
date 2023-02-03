@@ -8,8 +8,9 @@ int CALLBACK WinMain(
     _In_ int nShowCmd)
 {
     NEng::App::AppConfig::AppName = L"HelloShapes";
-    App::AddState<Hexagon>("TriangleState");
+    App::AddState<TriForce>("TrifroceState");
     App::AddState<DoubleSqaureState>("SquareState");
+    App::AddState<HeartState>("HeartState");
     NEng::App::Run();
     return 0;
 }

@@ -107,7 +107,7 @@ void GameState::Terminate()
 void GameState::Update(float deltaTime)
 {
 	auto input = NEng::Input::InputSystem::Get();
-	if (input->IsKeyPressed(NEng::Input::KeyCode::ONE))	App::ChangeState("SquareState");
-	else if (input->IsKeyPressed(NEng::Input::KeyCode::TWO)) App::ChangeState("TriangleState");
-	else if (input->IsKeyPressed(NEng::Input::KeyCode::THREE)) {}
+	if (input->IsKeyPressed(NEng::Input::KeyCode::ONE))	App::ChangeState("TrifroceState");
+	else if (input->IsKeyPressed(NEng::Input::KeyCode::TWO)) App::ChangeState("SquareState");
+	else if (input->IsKeyPressed(NEng::Input::KeyCode::THREE)) App::ChangeState("HeartState");
 }

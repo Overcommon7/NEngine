@@ -30,12 +30,24 @@ protected:
 
 };
 
-class Hexagon : public GameState
+class TriForce : public GameState
 {
 public:
     inline void CreateShape() override
 	{
+		vertices.push_back(Vertex({ Vector3(0, 0.4, 0.5), Colors::Yellow }));
+		vertices.push_back(Vertex({ Vector3(0.3, 0.2, 0.5), Colors::Yellow }));
+		vertices.push_back(Vertex({ Vector3(-0.3, 0.2, 0.5), Colors::Yellow }));
+		
+		vertices.push_back(Vertex({ Vector3(-0.3, 0.2, 0.5), Colors::Yellow }));
+		vertices.push_back(Vertex({ Vector3(0, 0, 0.5), Colors::Yellow }));
+		vertices.push_back(Vertex({ Vector3(-0.6, 0, 0.5), Colors::Yellow }));
 
+		vertices.push_back(Vertex({ Vector3(0.6, 0, 0.5), Colors::Yellow }));
+		vertices.push_back(Vertex({ Vector3(0, 0, 0.5), Colors::Yellow }));
+		vertices.push_back(Vertex({ Vector3(0.3, 0.2, 0.5), Colors::Yellow }));
+		
+		
 	}
 };
 
@@ -44,7 +56,21 @@ class DoubleSqaureState : public GameState
 public:
 	inline void CreateShape() override
 	{
+		vertices.push_back(Vertex({ Vector3(-0.5f, 0.5f, 0.5f), Colors::Red }));
+		vertices.push_back(Vertex({ Vector3(0, 0.5f, 0.5f), Colors::Red }));
+		vertices.push_back(Vertex({ Vector3(-0.5f, 0, 0.5f), Colors::Red }));
+		
+		vertices.push_back(Vertex({ Vector3(0, 0, 0.5f), Colors::Blue }));
+		vertices.push_back(Vertex({ Vector3(-0.5f, 0, 0.5f), Colors::Blue }));
+		vertices.push_back(Vertex({ Vector3(-0.5f, 0, 0.5f), Colors::Blue }));
+		
+		vertices.push_back(Vertex({ Vector3(0, 0, 0.5f), Colors::Green }));
+		vertices.push_back(Vertex({ Vector3(0, 0.5f, 0.5f), Colors::Green }));
+		vertices.push_back(Vertex({ Vector3(0.5f, 0, 0.5f), Colors::Green }));
 
+		vertices.push_back(Vertex({ Vector3(0.5f, 0.5f, 0.5f), Colors::Yellow }));
+		vertices.push_back(Vertex({ Vector3(0.5f, 0, 0.5f), Colors::Yellow }));
+		vertices.push_back(Vertex({ Vector3(0, 0.5f, 0.5f), Colors::Yellow }));		
 	}
 };
 
@@ -53,6 +79,17 @@ class HeartState : public GameState
 public:
 	inline void CreateShape() override
 	{
+		vertices.push_back(Vertex({ Vector3(-0.2f, 0.4f, 0.5f), Colors::Red }));
+		vertices.push_back(Vertex({ Vector3(-0.1f, 0.5f, 0.5f), Colors::Red }));
+		vertices.push_back(Vertex({ Vector3(0, 0.4f, 0.5f), Colors::Red }));
 
+		vertices.push_back(Vertex({ Vector3(0, 0.4f, 0.5f), Colors::Red }));
+		vertices.push_back(Vertex({ Vector3(0.1f, 0.5f, 0.5f), Colors::Red }));
+		vertices.push_back(Vertex({ Vector3(0.2f, 0.4f, 0.5f), Colors::Red }));
+
+		vertices.push_back(Vertex({ Vector3(0.2f, 0.4f, 0.5f), Colors::Red }));
+		vertices.push_back(Vertex({ Vector3(0, 0, 0.5f), Colors::Red }));
+		vertices.push_back(Vertex({ Vector3(-0.2f, 0.4f, 0.5f), Colors::Red}));
+		
 	}
 };
