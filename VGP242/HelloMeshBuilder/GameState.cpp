@@ -26,9 +26,6 @@ void GameState::Initialize()
 
 	vertexShader.Initalize(shaderFile, VE_Postition | VE_Color);
 	pixelShader.Initalize(shaderFile);
-	MeshPC cube = MeshBuilder::CreateCubePC(1.f, Colors::Aqua);
-	//meshBuffer.Initialize(vertices);
-	meshBuffer.Initialize(cube);
 	constantBuffer.Initialize(sizeof(Matrix4));
 }
 
