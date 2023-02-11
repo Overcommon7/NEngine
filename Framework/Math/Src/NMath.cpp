@@ -14,15 +14,14 @@ namespace NEng
     const Vector3 Vector3::YAxis(0.0f, 1.0f, 0.0f);
     const Vector3 Vector3::ZAxis(0.0f, 0.0f, 1.0f);
 
-    const Matrix4 Matrix4::Zero({ 0, 0, 0, 0,
-                                0, 0, 0, 0,
-                                0, 0, 0, 0,
-                                0, 0, 0, 0 });
-
-    const Matrix4 Matrix4::Identity({ 1, 0, 0, 0,
-                                    0, 1, 0, 0,
-                                    0, 0, 1, 0,
-                                    0, 0, 0, 1 });
+    Matrix4 Matrix4::Identity = { 1.0f, 0.0f, 0.0f, 0.0f,
+                                  0.0f, 1.0f, 0.0f, 0.0f,
+                                  0.0f, 0.0f, 1.0f, 0.0f,
+                                  0.0f, 0.0f, 0.0f, 1.0f };
+    Matrix4 Matrix4::Zero = { 0.0f, 0.0f, 0.0f, 0.0f,
+                              0.0f, 0.0f, 0.0f, 0.0f,
+                              0.0f, 0.0f, 0.0f, 0.0f,
+                              0.0f, 0.0f, 0.0f, 0.0f };
 
     const Quaternion Quaternion::Identity = { 0.0f, 0.0f, 0.0f, 1.0f };
     const Quaternion Quaternion::Zero = { 0.0f, 0.0f, 0.0f, 0.0f };

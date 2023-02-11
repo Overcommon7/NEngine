@@ -37,7 +37,7 @@ namespace NEng
 
 		uint32_t GetBackBufferWidth() const;
 		uint32_t GetBackBufferHeight() const;
-		float GetbackBufferRatio() const;
+		float GetBackBufferRatio() const;
 
 	private:
 		static LRESULT CALLBACK GraphicsSystemMessageHandler(HWND window, UINT message, WPARAM wParam, LPARAM lParam);

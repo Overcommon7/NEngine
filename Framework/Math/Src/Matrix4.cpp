@@ -3,54 +3,6 @@
 
 namespace NEng
 {
-    Matrix4::Matrix4(const vector<float>& f)
-    {
-        if (f.size() < 16)
-        {
-            *this = Matrix4();
-            return;
-        }
-        _11 = f[0];
-        _12 = f[1];
-        _13 = f[2];
-        _14 = f[3];
-        _21 = f[4];
-        _22 = f[5];
-        _23 = f[6];
-        _24 = f[7];
-        _31 = f[8];
-        _32 = f[9];
-        _33 = f[10];
-        _34 = f[11];
-        _41 = f[12];
-        _42 = f[13];
-        _43 = f[14];
-        _44 = f[15];
-    }
-    Matrix4::Matrix4(const vector<vector<float>>& f)
-    {
-        if (f.size() < 4 || f[0].size() < 4 || f[1].size() < 4 || f[2].size() < 4 || f[3].size() < 4)
-        {
-            *this = Matrix4();
-            return;
-        }
-        _11 = f[0][0];
-        _12 = f[0][1];
-        _13 = f[0][2];
-        _14 = f[0][3];
-        _21 = f[1][0];
-        _22 = f[1][1];
-        _23 = f[1][2];
-        _24 = f[1][3];
-        _31 = f[2][0];
-        _32 = f[2][1];
-        _33 = f[2][2];
-        _34 = f[2][3];
-        _41 = f[3][0];
-        _42 = f[3][1];
-        _43 = f[3][2];
-        _44 = f[3][3];
-    }
     Matrix4::Matrix4(const std::initializer_list<float> f)
     {
         if (f.size() == 1)
@@ -71,10 +23,11 @@ namespace NEng
             _42 = *f.begin();
             _43 = *f.begin();
             _44 = *f.begin();
+            return;
         }
         if (f.size() < 16)
         {
-            *this = Matrix4();
+            *this = Matrix4({0});
             return;
         }
         _11 = *f.begin();
@@ -169,8 +122,8 @@ namespace NEng
     Matrix4 Matrix4::operator*(const float& f) const
     {
         Matrix4 result = *this;
-        for (auto& n : result.v)
-            n *= f;
+        for (auto& n : result.GetVector())
+            *n *= f;
         return result;
     }
 
@@ -245,8 +198,8 @@ namespace NEng
 
     Matrix4& Matrix4::operator*=(const float& f)
     {
-        for (auto& n : v)
-            n *= f;
+        for (auto& n : GetVector())
+            *n *= f;
         return *this;
     }
 
@@ -457,5 +410,14 @@ namespace NEng
     Matrix4 Matrix4::Inverse() const
     {
         return Adjoint() * (1.0f / Determinant());
+    }
+    vector<float*> Matrix4::GetVector()
+    {
+        return vector<float*>({
+       &_11, &_12, &_13, &_14,
+       &_21, &_22, &_23, &_24,
+       &_31, &_32, &_33, &_34,
+       &_41, &_42, &_43, &_44,
+        });
     }
 }

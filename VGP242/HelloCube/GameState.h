@@ -21,13 +21,12 @@ protected:
 	};
 
 	vector<Vertex> vertices;
-
-	
-	ID3D11VertexShader* vertexShader = nullptr;
-	ID3D11InputLayout* inputLayout = nullptr;
-
-	ID3D11PixelShader* pixelShader = nullptr;
-
+	VertexShader vertexShader;
+	PixelShader pixelShader;
+	MeshBuffer meshBuffer;
+	Camera camera;
+	ConstantBuffer constantBuffer;
+	float rotationY;
 };
 
 class TriForce : public GameState
@@ -35,7 +34,7 @@ class TriForce : public GameState
 public:
     inline void CreateShape() override
 	{
-		vertices.push_back(Vertex({ Vector3(0, 0.4, 0.5), Colors::Yellow }));
+		/*vertices.push_back(Vertex({ Vector3(0, 0.4, 0.5), Colors::Yellow }));
 		vertices.push_back(Vertex({ Vector3(0.3, 0.2, 0.5), Colors::Yellow }));
 		vertices.push_back(Vertex({ Vector3(-0.3, 0.2, 0.5), Colors::Yellow }));
 		
@@ -45,9 +44,7 @@ public:
 
 		vertices.push_back(Vertex({ Vector3(0.6, 0, 0.5), Colors::Yellow }));
 		vertices.push_back(Vertex({ Vector3(0, 0, 0.5), Colors::Yellow }));
-		vertices.push_back(Vertex({ Vector3(0.3, 0.2, 0.5), Colors::Yellow }));
-		
-		
+		vertices.push_back(Vertex({ Vector3(0.3, 0.2, 0.5), Colors::Yellow }));*/
 	}
 };
 
@@ -62,7 +59,7 @@ public:
 		
 		vertices.push_back(Vertex({ Vector3(0, 0, 0.5f), Colors::Blue }));
 		vertices.push_back(Vertex({ Vector3(-0.5f, 0, 0.5f), Colors::Blue }));
-		vertices.push_back(Vertex({ Vector3(-0.5f, 0, 0.5f), Colors::Blue }));
+		vertices.push_back(Vertex({ Vector3(0, 0.5f, 0.5f), Colors::Blue }));
 		
 		vertices.push_back(Vertex({ Vector3(0, 0, 0.5f), Colors::Green }));
 		vertices.push_back(Vertex({ Vector3(0, 0.5f, 0.5f), Colors::Green }));
@@ -90,6 +87,5 @@ public:
 		vertices.push_back(Vertex({ Vector3(0.2f, 0.4f, 0.5f), Colors::Red }));
 		vertices.push_back(Vertex({ Vector3(0, 0, 0.5f), Colors::Red }));
 		vertices.push_back(Vertex({ Vector3(-0.2f, 0.4f, 0.5f), Colors::Red}));
-		
 	}
 };

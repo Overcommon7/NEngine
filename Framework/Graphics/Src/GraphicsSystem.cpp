@@ -164,7 +164,7 @@ uint32_t NEng::GraphicsSystem::GetBackBufferHeight() const
     return mSwapChainDesc.BufferDesc.Height;
 }
 
-float NEng::GraphicsSystem::GetbackBufferRatio() const
+float NEng::GraphicsSystem::GetBackBufferRatio() const
 {
     return (float)GetBackBufferWidth() / (float)GetBackBufferHeight();
 }

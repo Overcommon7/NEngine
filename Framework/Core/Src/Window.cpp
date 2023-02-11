@@ -9,6 +9,10 @@ LRESULT CALLBACK WindowMessageHandler(HWND handle, UINT message, WPARAM wParam, 
 	case WM_DESTROY:
 		PostQuitMessage(0);
 		return 0;
+	case WM_SIZE:
+		//if ()
+			ShowWindow(handle, SW_RESTORE);
+		break;
 	}
 
 	return DefWindowProc(handle, message, wParam, lParam);
@@ -16,6 +20,8 @@ LRESULT CALLBACK WindowMessageHandler(HWND handle, UINT message, WPARAM wParam, 
 
 void Window::Initialize(HINSTANCE Instance, const wstring& appname, uint32_t width, uint32_t height)
 {
+	this->width = width;
+	this->height = height;
 	instance = Instance;
 	appName = std::move(appname);
 	WNDCLASSEX wc = { 0 };
@@ -41,13 +47,17 @@ void Window::Initialize(HINSTANCE Instance, const wstring& appname, uint32_t wid
 	const int winHeight = std::min(static_cast<int>(rc.bottom - rc.top), screenHeight);
 	const int left = (screenwidth - winWidth) / 2;
 	const int top = (screenHeight - winHeight) / 2;
+	screenRect = rc;
+	screenRect.top = top;
+	screenRect.left = left;
+	
 	wnd = CreateWindow(appName.c_str(),
 		appName.c_str(),
 		WS_OVERLAPPEDWINDOW,
 		left, top,
 		winWidth, winHeight,
 		nullptr, nullptr,
-		instance, nullptr);
+		instance, this);
 
 	ShowWindow(wnd, SW_SHOWNORMAL);
 

@@ -111,6 +111,13 @@ LRESULT CALLBACK InputSystem::InputSystemMessageHandler(HWND window, UINT messag
 				sInputSystem->mMouseRightEdge = mouseX + 1 >= rect.right;
 				sInputSystem->mMouseTopEdge = mouseY <= rect.top;
 				sInputSystem->mMouseBottomEdge = mouseY + 1 >= rect.bottom;
+
+				const POINTS pt = MAKEPOINTS(lParam);
+
+				if (pt.x < 0 || pt.x >= rect.right - rect.left || pt.y < 0 || pt.y >= rect.bottom - rect.top)
+					ReleaseCapture();
+				else SetCapture(window);
+
 				break;
 			}
 			case WM_KEYDOWN:
