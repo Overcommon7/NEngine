@@ -5,7 +5,11 @@ namespace NEng
 	class VertexShader final
 	{
 	public:
-
+		template<class VertexType>
+		void Initalize(const std::filesystem::path& filepath)
+		{
+			Initalize(filepath, VertexType::Format);
+		}
 		void Initalize(const std::filesystem::path& filepath, uint32_t uint);
 		void Terminate();
 

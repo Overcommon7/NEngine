@@ -5,12 +5,12 @@
 
 namespace NEng
 {
-	constexpr uint32_t VE_Postition   = 0x1 <<  0;
-	constexpr uint32_t VE_Normal      = 0x1 <<  1;
-	constexpr uint32_t VE_Tangent     = 0x1 <<  2;
-	constexpr uint32_t VE_Color       = 0x1 <<  3; 
-	constexpr uint32_t VE_TexCoord    = 0x1 <<  4;
-	constexpr uint32_t VE_BlendIndex  = 0x1 <<  5;
+	constexpr uint32_t VE_Postition   = 0x1 << 0;
+	constexpr uint32_t VE_Normal      = 0x1 << 1;
+	constexpr uint32_t VE_Tangent     = 0x1 << 2;
+	constexpr uint32_t VE_Color       = 0x1 << 3; 
+	constexpr uint32_t VE_TexCoord    = 0x1 << 4;
+	constexpr uint32_t VE_BlendIndex  = 0x1 << 5;
 	constexpr uint32_t VE_BlendWeight = 0x1 << 6;
 
 #define VERTEX_FORMAT(fmt)\
@@ -24,7 +24,7 @@ namespace NEng
 
 	struct VertexPC
 	{
-		VERTEX_FORMAT(VE_Postition);
+		VERTEX_FORMAT(VE_Postition | VE_Color);
 		Vector3 position;
 		Color color;
 	};

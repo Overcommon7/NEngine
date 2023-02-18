@@ -7,8 +7,8 @@ namespace NEng
 	class MeshBuilder
 	{
 	public:
-		static MeshPC CreateCubePC(float size, const Color& color);
-		static MeshPX CreateCubePX(float size, const Color& color);
+		static MeshPC CreateCubePC(float size);
+		static MeshPX CreateCubePX(float size, bool reverseNormals = false);
 		static Mesh CreateCube(float size);
 
 		static MeshPC CreateRectPC(float width, float height, float depth);

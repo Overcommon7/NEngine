@@ -3,9 +3,37 @@
 
 namespace
 {
+	template<typename T>
+	static T Random(const T& includedMax, const T& includedMin = 0, const std::pair<T, T>& ExcludeRange = { 0, 0 }, const vector<T>& exclude = {})
+	{
+		bool range = false;
+		bool isValid = true;
+		T value{};
+		if (ExcludeRange.first != ExcludeRange.second) range = true;
+		std::random_device r;
+
+		do
+		{
+			isValid = true;
+			std::mt19937 gen(r());
+			std::uniform_int_distribution<T> dist(includedMin, includedMax);
+			value = dist(gen);
+			for (const auto& i : exclude)
+				if (i == value)
+				{
+					isValid = false;
+					break;
+				}
+			if (range && isValid)
+				if (value >= ExcludeRange.first && value <= ExcludeRange.second)
+					isValid = false;
+		} while (!isValid);
+		return value;
+	}
+
 	Color GetNextColor()
 	{
-		constexpr Color colorTable[] = {
+		static const vector<Color> colorTable = {
 		   Colors::Aquamarine,
 		   Colors::DarkSlateGray,
 		   Colors::DarkCyan,
@@ -22,7 +50,7 @@ namespace
 
 		};
 
-		return colorTable[rand() % (sizeof(Color) / sizeof(colorTable))];
+		return colorTable[Random(colorTable.size() - 1)];
 		
 	}
 	void CreateCubeIndicies(vector<uint32_t>& indicies)
@@ -54,11 +82,40 @@ namespace
 		};
 	}
 
-	void CreatePlaneIndicies(vector<uint32_t> indices, int numRows, int numColunms)
+	void CreateSkyBoxIndicies(vector<uint32_t>& indicies)
+	{
+		indicies = {
+			//front
+			0, 1, 2,
+			0, 2, 3,
+
+			//back
+			7, 6, 5,
+			7, 5, 4,
+
+			//right
+			3, 6, 2,
+			3, 7, 6,
+
+			//left
+			0, 1, 5,
+			0, 5, 4,
+
+			//top
+			8, 10, 9,
+			8, 11, 10,
+
+			//bottom
+			12, 13, 14,
+			12, 14, 15
+		};
+	}
+
+	void CreatePlaneIndicies(vector<uint32_t>& indices, int numRows, int numColunms)
 	{
 		for (int r = 0; r <= numRows; r++)
 		{
-			for (int c = 0; c < numColunms; c++)
+			for (int c = 0; c <= numColunms; c++)
 			{
 				int i = r * (numColunms + 1) + c;
 
@@ -75,7 +132,7 @@ namespace
 		}
 	}
 
-	void CreateCapIndicies(vector<uint32_t> indices, int slices, int topIndex, int bottomIndex)
+	void CreateCapIndicies(vector<uint32_t>& indices, int slices, int topIndex, int bottomIndex)
 	{
 		for (int s = 0; s < slices; s++)
 		{
@@ -94,45 +151,58 @@ namespace
 
 namespace NEng
 {
-	MeshPC MeshBuilder::CreateCubePC(float size, const Color& color)
+	MeshPC MeshBuilder::CreateCubePC(float size)
 	{
 		MeshPC mesh;
 
 		const float hs = size * 0.5f;
 		//front
-		mesh.verticies.push_back({ {-hs, -hs, -hs}, color });
-		mesh.verticies.push_back({ {-hs, hs, -hs}, color });
-		mesh.verticies.push_back({ {hs, hs, -hs}, color });
-		mesh.verticies.push_back({ {hs, -hs, -hs}, color });
+		mesh.verticies.push_back({ {-hs, -hs, -hs}, GetNextColor() });
+		mesh.verticies.push_back({ {-hs, hs, -hs},  GetNextColor() });
+		mesh.verticies.push_back({ {hs, hs, -hs},   GetNextColor() });
+		mesh.verticies.push_back({ {hs, -hs, -hs},  GetNextColor() });
 
 		//back
-		mesh.verticies.push_back({ {-hs, -hs, hs}, color });
-		mesh.verticies.push_back({ {-hs, hs, hs}, color });
-		mesh.verticies.push_back({ {hs, hs, hs}, color });
-		mesh.verticies.push_back({ {hs, -hs, hs}, color });
+		mesh.verticies.push_back({ {-hs, -hs, hs},  GetNextColor() });
+		mesh.verticies.push_back({ {-hs, hs, hs},   GetNextColor() });
+		mesh.verticies.push_back({ {hs, hs, hs},    GetNextColor() });
+		mesh.verticies.push_back({ {hs, -hs, hs},   GetNextColor() });
 
 		CreateCubeIndicies(mesh.indicies);
 
 		return mesh;
 	}
-	MeshPX MeshBuilder::CreateCubePX(float size, const Color& color)
+	MeshPX MeshBuilder::CreateCubePX(float size, bool reverseNormals)
 	{
 		MeshPX mesh;
 
 		const float hs = size * 0.5f;
 		//front
-		mesh.verticies.push_back({ {-hs, -hs, -hs}, {0.25f, 0.66f} });
-		mesh.verticies.push_back({ {-hs, hs, -hs}, {0.25f, 0.33f} });
-		mesh.verticies.push_back({ {hs, hs, -hs}, {0.5f, 0.33f} });
-		mesh.verticies.push_back({ {hs, -hs, -hs}, {0.5f, 0.66f} });
+		mesh.verticies.push_back({ {-hs, -hs, -hs}, {0.0f, 0.667f} });
+		mesh.verticies.push_back({ {-hs, hs, -hs},  {0.0f, 0.333f} });
+		mesh.verticies.push_back({ {hs, hs, -hs},   {0.25f, 0.333f}  });
+		mesh.verticies.push_back({ {hs, -hs, -hs},  {0.25f, 0.667f}  });
 
 		//back
-		mesh.verticies.push_back({ {-hs, -hs, hs}, {0.25f, 1.f} });
-		mesh.verticies.push_back({ {-hs, hs, hs}, {0.f, 0.33f} });
-		mesh.verticies.push_back({ {hs, hs, hs}, {0.5f, 0.f} });
-		mesh.verticies.push_back({ {hs, -hs, hs}, {0.5f, 1.f} });
+		mesh.verticies.push_back({ {-hs, -hs, hs},  {0.5f, 0.667f}  });
+		mesh.verticies.push_back({ {-hs, hs, hs},   {0.5f, 0.333f}  });
+		mesh.verticies.push_back({ {hs, hs, hs},    {0.75f, 0.333f}   });
+		mesh.verticies.push_back({ {hs, -hs, hs},   {0.75f, 0.667f}   });
 
-		CreateCubeIndicies(mesh.indicies);
+		//top
+		mesh.verticies.push_back({ {-hs, hs, -hs}, {0.25f, 0.333f} });
+		mesh.verticies.push_back({ {-hs, hs, hs},  {0.5f, 0.333f} });
+		mesh.verticies.push_back({ {hs, hs, hs},   {0.5f, 0.f} });
+		mesh.verticies.push_back({ {hs, hs, -hs},  {0.25f, 0.f} });
+
+		//bottom
+		mesh.verticies.push_back({ {-hs, -hs, hs},  {0.25f, 0.667f} });
+		mesh.verticies.push_back({ {-hs, -hs, -hs},   {0.75f, 0.333f} });
+		mesh.verticies.push_back({ {hs, -hs, hs},    {1.f, 0.333f} });
+		mesh.verticies.push_back({ {hs, -hs, -hs},   {1.f, 0.667f} });
+
+		if (reverseNormals) CreateSkyBoxIndicies(mesh.indicies);
+		else CreateCubeIndicies(mesh.indicies);
 
 		return mesh;
 	}
@@ -148,16 +218,16 @@ namespace NEng
 		const float hh = height * 0.5f;
 		const float hd = depth * 0.5f;
 
-		mesh.verticies.push_back({ {-hw, -hh, -hd}, GetNextColor()});
-		mesh.verticies.push_back({ {-hw, hh, -hd}, GetNextColor() });
-		mesh.verticies.push_back({ {hw, hh, -hd}, GetNextColor() });
-		mesh.verticies.push_back({ {hw, -hh, -hd},GetNextColor() });
+		mesh.verticies.push_back({ {-hw, -hh, -hd} , GetNextColor() });
+		mesh.verticies.push_back({ {-hw, hh, -hd}  , GetNextColor() });
+		mesh.verticies.push_back({ {hw, hh, -hd}   , GetNextColor() });
+		mesh.verticies.push_back({ {hw, -hh, -hd}  , GetNextColor() });
 
 		//back
-		mesh.verticies.push_back({ {-hw, -hh, hd}, GetNextColor() });
-		mesh.verticies.push_back({ {-hw, hh, hd}, GetNextColor() });
-		mesh.verticies.push_back({ {hw, hh, hd}, GetNextColor() });
-		mesh.verticies.push_back({ {hw, -hh, hd}, GetNextColor() });
+		mesh.verticies.push_back({ {-hw, -hh, hd}  , GetNextColor() });
+		mesh.verticies.push_back({ {-hw, hh, hd}   , GetNextColor() });
+		mesh.verticies.push_back({ {hw, hh, hd}    , GetNextColor() });
+		mesh.verticies.push_back({ {hw, -hh, hd}   , GetNextColor() });
 
 		CreateCubeIndicies(mesh.indicies);
 
@@ -165,7 +235,26 @@ namespace NEng
 	}
 	MeshPX MeshBuilder::CreateRectPX(float width, float height, float depth)
 	{
-		return MeshPX();
+		MeshPX mesh;
+
+		const float hw = width * 0.5f;
+		const float hh = height * 0.5f;
+		const float hd = depth * 0.5f;
+
+		mesh.verticies.push_back({ {-hw, -hh, -hd}  , {0.25f, 0.66f} });
+		mesh.verticies.push_back({ {-hw, hh, -hd}   , {0.25f, 0.33f} });
+		mesh.verticies.push_back({ {hw, hh, -hd}    , {0.5f, 0.33f} });
+		mesh.verticies.push_back({ {hw, -hh, -hd}   , {0.5f, 0.66f} });
+
+		//back
+		mesh.verticies.push_back({ {-hw, -hh, hd}  ,  {0.25f, 1.f} });
+		mesh.verticies.push_back({ {-hw, hh, hd}   ,  {0.f, 0.33f} });
+		mesh.verticies.push_back({ {hw, hh, hd}    ,  {0.5f, 0.f} });
+		mesh.verticies.push_back({ {hw, -hh, hd}   ,  {0.5f, 1.f} });
+
+		CreateCubeIndicies(mesh.indicies);
+
+		return mesh;
 	}
 	MeshPC MeshBuilder::CreatePlanePC(int numRows, int numCols, float spacing)
 	{
@@ -225,7 +314,7 @@ namespace NEng
 
 		float vertRotation = PI / float(rings - 1);
 		float horzRotation = TWO_PI / float(slices);
-
+		int size = 0;
 		for (int r = 0; r <= rings; r++)
 		{
 			float ring = (float)r;
@@ -234,10 +323,14 @@ namespace NEng
 			for (int s = 0; s <= slices; s++)
 			{
 				float slice = (float)s;
-				float rotation = slices * horzRotation;
+				float rotation = slice * horzRotation;
 
-				mesh.verticies.push_back({ {radius * sin(rotation) * sin(phi), radius * cos(phi), radius * cos(rotation) * sin(phi) }, GetNextColor() });
-
+				mesh.verticies.push_back({ {
+						radius * sin(rotation) * sin(phi), 
+						radius * cos(phi), 
+						radius * cos(rotation) * sin(phi) }, 
+						GetNextColor() });
+				++size;
 			}
 
 		}
@@ -248,6 +341,34 @@ namespace NEng
 	}
 	MeshPX MeshBuilder::CreateSpherePX(int slices, int rings, float radius)
 	{
-		return MeshPX();
+		MeshPX mesh;
+
+		float vertRotation = PI / float(rings - 1);
+		float horzRotation = TWO_PI / float(slices);
+		float uStep = 1.0f / (float)slices;
+		float vStep = 1.0f / float(rings);
+
+		for (int r = 0; r <= rings; r++)
+		{
+			float ring = (float)r;
+			float phi = ring * vertRotation;
+
+			for (int s = 0; s <= slices; s++)
+			{
+				float slice = (float)s;
+				float rotation = slice * horzRotation;
+
+				float u = 1.0f - (uStep * slice);
+				float v = vStep * ring;
+
+				mesh.verticies.push_back({ {radius * sin(rotation) * sin(phi), radius * cos(phi), radius * cos(rotation) * sin(phi) }, {u, v} });
+
+			}
+
+		}
+
+		CreatePlaneIndicies(mesh.indicies, rings, slices);
+
+		return mesh;
 	}
 }

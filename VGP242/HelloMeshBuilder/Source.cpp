@@ -8,6 +8,11 @@ int CALLBACK WinMain(
     _In_ int nShowCmd)
 {
     NEng::App::AppConfig::AppName = L"HelloMeshBuilder";
+    NEng::App::AddState<SphereMesh>("SphereMesh");
+    NEng::App::AddState<CubeMesh>("CubeMesh");
+    NEng::App::AddState<CylinderMesh>("CylinderMesh");
+    NEng::App::AddState<PlaneMesh>("PlaneMesh");
+    NEng::App::AddState<RectangleMesh>("RectangleMesh");
     NEng::App::Run();
     return 0;
 }

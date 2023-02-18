@@ -28,3 +28,51 @@ protected:
 	ConstantBuffer constantBuffer;
 	float rotationY;
 };
+
+class CubeMesh : public GameState
+{
+public:
+	void CreateShape() override
+	{
+		auto cube = MeshBuilder::CreateCubePC(1);
+		meshBuffer.Initialize(cube);
+	}	
+};
+
+class SphereMesh : public GameState
+{
+	void CreateShape() override
+	{
+		auto sphere = MeshBuilder::CreateSpherePC(30, 30, 1);
+		meshBuffer.Initialize(sphere);
+	}
+};
+
+class CylinderMesh : public GameState
+{
+	void CreateShape() override
+	{
+		auto sphere = MeshBuilder::CreateCylinderPC(10, 4);
+		meshBuffer.Initialize(sphere);
+	}
+};
+
+class PlaneMesh : public GameState
+{
+	void CreateShape() override
+	{
+		auto sphere = MeshBuilder::CreatePlanePC(5, 5, 2);
+		meshBuffer.Initialize(sphere);
+	}
+};
+
+class RectangleMesh : public GameState
+{
+	void CreateShape() override
+	{
+		auto sphere = MeshBuilder::CreateRectPC(1, 3, 2);
+		meshBuffer.Initialize(sphere);
+	}
+};
+
+
