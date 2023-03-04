@@ -38,7 +38,7 @@ void NEng::BlendState::ClearState()
 NEng::BlendState::~BlendState()
 {
 	if (mBlendState != nullptr)
-		throw std::exception("Blend State -- Blend state not released");
+		throw CreateException("Blend State -- Blend state not released", __FILE__, __LINE__).what();
 }
 
 void NEng::BlendState::Initialize(Mode mode)

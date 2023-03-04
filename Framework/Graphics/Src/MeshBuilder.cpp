@@ -113,18 +113,18 @@ namespace
 
 	void CreatePlaneIndicies(vector<uint32_t>& indices, int numRows, int numColunms)
 	{
-		for (int r = 0; r <= numRows; r++)
+		for (int r = 0; r <= numRows; ++r)
 		{
-			for (int c = 0; c <= numColunms; c++)
+			for (int c = 0; c < numColunms; ++c)
 			{
-				int i = r * (numColunms + 1) + c;
+				int i = (r * numColunms) + c;
 
 				//triangle 1
 				indices.push_back(i);
 				indices.push_back(i + numColunms + 1);
 				indices.push_back(i + 1);
 
-				//trinagle 2
+				//triangle 2
 				indices.push_back(i);
 				indices.push_back(i + numColunms);
 				indices.push_back(i + numColunms + 1);
@@ -348,12 +348,12 @@ namespace NEng
 		float uStep = 1.0f / (float)slices;
 		float vStep = 1.0f / float(rings);
 
-		for (int r = 0; r <= rings; r++)
+		for (int r = 0; r <= rings; ++r)
 		{
 			float ring = (float)r;
 			float phi = ring * vertRotation;
 
-			for (int s = 0; s <= slices; s++)
+			for (int s = 0; s <= slices; ++s)
 			{
 				float slice = (float)s;
 				float rotation = slice * horzRotation;
@@ -361,7 +361,53 @@ namespace NEng
 				float u = 1.0f - (uStep * slice);
 				float v = vStep * ring;
 
-				mesh.verticies.push_back({ {radius * sin(rotation) * sin(phi), radius * cos(phi), radius * cos(rotation) * sin(phi) }, {u, v} });
+				mesh.verticies.push_back({
+					{
+						radius * sin(rotation) * sin(phi),
+						radius * cos(phi),
+						radius * cos(rotation) * sin(phi)
+					},
+
+					{u, v} });
+
+			}
+
+		}
+
+		CreatePlaneIndicies(mesh.indicies, rings, slices);
+
+		return mesh;
+	}
+	MeshPX MeshBuilder::CreateSkySpherePX(int slices, int rings, float radius)
+	{
+		MeshPX mesh;
+
+		float vertRotation = PI / float(rings - 1);
+		float horzRotation = TWO_PI / float(slices);
+		float uStep = 1.0f / (float)slices;
+		float vStep = 1.0f / float(rings);
+
+		for (int r = 0; r <= rings; ++r)
+		{
+			float ring = (float)r;
+			float phi = ring * vertRotation;
+
+			for (int s = 0; s <= slices; ++s)
+			{
+				float slice = (float)s;
+				float rotation = slice * horzRotation;
+
+				float u = 1.0f - (uStep * slice);
+				float v = vStep * ring;
+
+				mesh.verticies.push_back({ 
+					{
+						radius * cos(rotation) * sin(phi), 
+						radius * cos(phi), 
+						radius * sin(rotation) * sin(phi) 
+					}, 
+					
+					{u, v} });
 
 			}
 

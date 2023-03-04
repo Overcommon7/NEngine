@@ -29,7 +29,15 @@ namespace NEng
 		inline void* GetRawData() const { return mShaderResourceView; }
 
 	protected:
-		inline DXGI_FORMAT GetDXGIFormat(const Format& format);
+		inline DXGI_FORMAT GetDXGIFormat(const Format& format)
+		{
+			switch (format)
+			{
+			default:
+			case NEng::Texture::Format::RGBA_U8:   return DXGI_FORMAT_R8G8B8A8_UINT;
+			case NEng::Texture::Format::RGBA_U32:  return DXGI_FORMAT_R32G32B32A32_UINT;
+			}
+		}
 		ID3D11ShaderResourceView* mShaderResourceView = nullptr;
 	};
 }

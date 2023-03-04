@@ -1,13 +1,14 @@
 #pragma once
 
 #include <../NEngine/Inc/NEngine.h>
+#include "RenderObject.h"
 
 using namespace NEng;
 
 class GameState : public AppState
 {
 public :
-	virtual void CreateShape() = 0;
+	//virtual void CreateShape() = 0;
 	void DebugUI();
 	void Initialize() override;
 	void Terminate() override;
@@ -15,6 +16,9 @@ public :
 	void Render() override;
 
 protected:
+
+	void RenderMesh(Camera& camera, const float& aspectRatio = 0.0f, const bool& usetransfrom = true);
+
 	struct Vertex
 	{
 		Vector3 position;
@@ -32,12 +36,22 @@ protected:
 	vector<Vertex> vertices;
 	VertexShader vertexShader;
 	PixelShader pixelShader;
-	MeshBuffer meshBuffer;
+	/*MeshBuffer meshBuffer;
+	MeshBuffer skyBuffer;*/
 	Camera camera;
+	Camera mRenderTargetCamera;
 	ConstantBuffer constantBuffer;
 
-	Texture mDiffuseTexture;
+	float sensitivity = 0.75f;
+	float walkSpeed = 2.f;
+	float sprintSpeed = 5.f;
+
+	//Texture mDiffuseTexture;
 	Sampler mSampler;
+	RenderTarget mRenderTarget;
+
+	SkySphere skySphere;
+	Earth earth;
 
 	std::filesystem::path shaderFile = "../../Assets/Shaders/DoTexturing.fx";
 	std::filesystem::path texturePath = "../../Assets/Textures/earth.jpg";
@@ -50,25 +64,27 @@ protected:
 	SimpleDebug Sphere;
 };
 
-class SkyBox : public GameState
-{
-public:
-	void CreateShape() override
-	{
-		auto cube = MeshBuilder::CreateCubePX(1000, true);
-		meshBuffer.Initialize(cube);
-
-		texturePath = "../../Assets/Images/skybox/skybox_texture.jpg";
-	}	
-};
-
-class SphereMesh : public GameState
-{
-	void CreateShape() override
-	{
-		auto sphere = MeshBuilder::CreateSpherePX(30, 30, 1);
-		meshBuffer.Initialize(sphere);
-	}
-};
+//class SkyBox : public GameState
+//{
+//public:
+//	void CreateShape() override
+//	{
+//		auto cube = MeshBuilder::CreateCubePX(1000, true);
+//		meshBuffer.Initialize(cube);
+//
+//		texturePath = "../../Assets/Images/skybox/skybox_texture.jpg";
+//	}	
+//};
+//
+//class SphereMesh : public GameState
+//{
+//	void CreateShape() override
+//	{
+//		auto sphere = MeshBuilder::CreateSpherePX(30, 30, 1);
+//		meshBuffer.Initialize(sphere);
+//
+//
+//	}
+//};
 
 

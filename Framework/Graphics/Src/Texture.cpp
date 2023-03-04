@@ -13,7 +13,7 @@ void NEng::Texture::UnbindPS(uint32_t slot)
 NEng::Texture::~Texture()
 {
 	if (mShaderResourceView != nullptr)
-		throw std::exception("texture -- Termiante must be called before detruction");
+		throw CreateException("Texture -- Termiante must be called before detruction", __FILE__, __LINE__).what();
 }
 
 NEng::Texture::Texture(Texture&& t) noexcept :
@@ -35,10 +35,13 @@ void NEng::Texture::Initialize(const std::filesystem::path& filename)
 	auto device = GraphicsSystem::Get()->GetDevice();
 	auto context = GraphicsSystem::Get()->GetContext();
 	auto hr = DirectX::CreateWICTextureFromFile(device, context, filename.generic_wstring().c_str(), nullptr, &mShaderResourceView);
+	if (!SUCCEEDED(hr))
+		throw CreateException("Texture --- Couldn't Create Texture From File", __FILE__, __LINE__).what();
 }
 
 void NEng::Texture::Initialize(uint32_t width, uint32_t height, Format format)
 {
+
 }
 
 void NEng::Texture::Terminate()
@@ -56,12 +59,3 @@ void NEng::Texture::BindPS(uint32_t slot) const
 	GraphicsSystem::Get()->GetContext()->PSSetShaderResources(slot, 1, &mShaderResourceView);
 }
 
-inline DXGI_FORMAT NEng::Texture::GetDXGIFormat(const Format& format)
-{
-	switch (format)
-	{
-	default:
-	case NEng::Texture::Format::RGBA_U8:   return DXGI_FORMAT_R8G8B8A8_UINT;	
-	case NEng::Texture::Format::RGBA_U32:  return DXGI_FORMAT_R32G32B32A32_UINT;
-	}
-}

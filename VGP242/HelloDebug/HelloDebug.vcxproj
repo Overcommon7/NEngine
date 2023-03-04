@@ -136,10 +136,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="GameState.cpp" />
+    <ClCompile Include="RenderObject.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameState.h" />
+    <ClInclude Include="RenderObject.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\NEngine\NEngine.vcxproj">

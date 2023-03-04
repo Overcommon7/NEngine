@@ -19,6 +19,7 @@ namespace NEng
 
 		static MeshPC CreateSpherePC(int slices, int rings, float radius);
 		static MeshPX CreateSpherePX(int slices, int rings, float radius);
+		static MeshPX CreateSkySpherePX(int slices, int rings, float radius);
 
 		MeshBuilder() = delete;
 		MeshBuilder(const MeshBuilder& m) = delete;

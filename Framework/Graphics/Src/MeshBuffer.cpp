@@ -39,7 +39,7 @@ namespace NEng
 			context->IASetIndexBuffer(indexBuffer, DXGI_FORMAT_R32_UINT, 0);
 			context->DrawIndexed(indexCount, 0, 0);
 		}
-		else context->Draw((UINT)vertexSize, 0);
+		else context->Draw((UINT)vertexCount, 0);
 
 		
 	}

@@ -8,8 +8,7 @@ int CALLBACK WinMain(
     _In_ int nShowCmd)
 {
     NEng::App::AppConfig::AppName = L"HelloTexture";
-    NEng::App::AddState<SphereMesh>("SphereState");
-    NEng::App::AddState<SkyBox>("SkyBox");
+    NEng::App::AddState<GameState>("State");
     NEng::App::Run();
     return 0;
 }

@@ -19,3 +19,8 @@ inline void SafeRelease(T*& ptr)
         ptr = nullptr;
     }
 }
+
+inline std::exception CreateException(const char* message, const char* file, const int& line)
+{
+    return std::exception((string(message) + file + to_string(line)).c_str());
+}

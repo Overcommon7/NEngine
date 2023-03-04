@@ -65,6 +65,9 @@
     <ClInclude Include="Inc\DebugUI.h">
       <Filter>Inc</Filter>
     </ClInclude>
+    <ClInclude Include="Inc\RenderTarget.h">
+      <Filter>Inc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Src\Precompiled.cpp">
@@ -104,6 +107,9 @@
       <Filter>Src</Filter>
     </ClCompile>
     <ClCompile Include="Src\DebugUI.cpp">
+      <Filter>Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\RenderTarget.cpp">
       <Filter>Src</Filter>
     </ClCompile>
   </ItemGroup>

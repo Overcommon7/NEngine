@@ -64,7 +64,7 @@ namespace NEng
 		desc.MaxLOD = D3D11_FLOAT32_MAX;
 
 		auto hr = GraphicsSystem::Get()->GetDevice()->CreateSamplerState(&desc, &mSamplerState);
-		if (!SUCCEEDED(hr)) throw std::exception("Sampler - Failed to Create Sampler State");
+		if (!SUCCEEDED(hr)) throw CreateException("Sampler - Failed to Create Sampler State", __FILE__, __LINE__).what();
 	}
 
 	void Sampler::Terminate()

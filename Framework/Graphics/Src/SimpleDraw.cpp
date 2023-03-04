@@ -138,9 +138,9 @@ namespace NEng
 				float rotation1 = slice1 * horzRotation;
 
 				v0 = {
-						radius * sin(rotation0) * sin(phi) + pos.x,
-						radius * cos(phi) + pos.y,
-						radius * cos(rotation0) * sin(phi) + pos.z };
+						(radius * sin(rotation0) * sin(phi)) + pos.x,
+						(radius * cos(phi)) + pos.y,
+						(radius * cos(rotation0) * sin(phi)) + pos.z };
 				v1 = {
 						(radius * sin(rotation1) * sin(phi)) + pos.x,
 						(radius * cos(phi)) + pos.y,
@@ -150,11 +150,11 @@ namespace NEng
 
 				v0 = {
 						(radius * cos(phi)) + pos.x,
-						(radius * cos(phi) * sin(phi) + radius) + pos.y,
+						(radius * cos(rotation0) * sin(phi)) + pos.y,
 						(radius * sin(rotation0) * sin(phi)) + pos.z };
 				v1 = {
 						(radius * cos(phi)) + pos.x,
-						(radius * cos(phi) * sin(phi) + radius) + pos.y,
+						(radius * cos(rotation1) * sin(phi)) + pos.y,
 						(radius * sin(rotation1) * sin(phi)) + pos.z };
 
 				AddLine(v0, v1, color);
@@ -162,9 +162,40 @@ namespace NEng
 		}
 	}
 
+	void SimpleDraw::AddCircle(int slices, float radius, const Vector3& pos, const Color& color)
+	{
+		float horzRotation = TWO_PI / float(slices);
+		Vector3 v0 = {};
+		Vector3 v1 = {};
+
+		for (int s = 0; s <= slices; s++)
+		{
+			float slice0 = (float)s;
+			float rotation0 = slice0 * horzRotation;
+
+			float slice1 = s + 1.f;
+			float rotation1 = slice1 * horzRotation;
+
+			v0 = {
+					(radius *  sin(rotation0)) + pos.x,
+					pos.y,
+					(radius * cos(rotation0)) + pos.z 
+			};
+			v1 = {
+					(radius * sin(rotation1)) + pos.x,
+					pos.y,
+					(radius * cos(rotation1)) + pos.z 
+			};
+
+			AddLine(v0, v1, color);
+		}
+	}
+
 	void SimpleDraw::AddGroundPlane(float size, const Color& color)
 	{
 		const float hs = size * 0.5f;
+		Vector3 v0 = {};
+		Vector3 v1 = {};
 
 		for (int i = 0; i <= size; ++i)
 		{
