@@ -33,6 +33,7 @@ namespace NEng
 		void Terminate();
 
 		void SetTopology(const Topology& topology);
+		void Update(void* verticies, uint32_t vertexCount);
 		void Render();
 
 	private:
@@ -48,7 +49,6 @@ namespace NEng
 		uint32_t vertexSize;
 		uint32_t vertexCount;
 		uint32_t indexCount;
-
 
 	};
 }

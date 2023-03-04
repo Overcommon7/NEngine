@@ -20,6 +20,7 @@ namespace NEng
             inline static std::wstring AppName = L"AppName";
             inline static uint32_t WinWidth = 1280;
             inline static uint32_t WinHeight = 720;
+            inline static uint32_t DebugDrawLimit = 15000;
         };
 
         App() = delete;

@@ -2,6 +2,7 @@
 #include "App.h"
 #include "AppState.h"
 
+
 namespace NEng
 {
 	void App::Run()
@@ -15,6 +16,8 @@ namespace NEng
 
 		Input::InputSystem::StaticInitialize(window.wnd);
 		GraphicsSystem::StaticInitialize(window.wnd, false);
+		SimpleDraw::Initialize(AppConfig::DebugDrawLimit);
+		DebugUI::StaticInitialize(window.wnd, false, true);
 		auto input = Input::InputSystem::Get();
 
 		mCurrentState->Initialize();
@@ -49,11 +52,16 @@ namespace NEng
 			
 			gs->BeginRender();
 			mCurrentState->Render();
+			DebugUI::BeginRender();
 			mCurrentState->DebugUI();
+			DebugUI::EndRender();
 			gs->EndRender();
 			
 		}
 		mCurrentState->Terminate();
+
+		SimpleDraw::Terminate();
+		DebugUI::StaticTerminate();
 		Input::InputSystem::StaticTerminate();
 		GraphicsSystem::StaticTerminate();
 		window.Terminate();

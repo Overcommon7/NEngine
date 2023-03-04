@@ -22,6 +22,44 @@ void GameState::Render()
 	meshBuffer.Render();
 }
 
+void GameState::DebugUI()
+{
+	ImGui::Begin("DebugWindow", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
+
+	ImGui::Checkbox("Sphere", &Sphere.render);
+	if (Sphere.render)
+	{
+		ImGui::DragFloat4("Color", &Sphere.color.r, 0.1f);
+		ImGui::DragFloat3("Position", &Sphere.position.x, 0.1f);
+		ImGui::DragFloat("Radius", &Sphere.size.x, 0.1f);
+		SimpleDraw::AddSphere(10, 30, Sphere.size.x, Sphere.position, Sphere.color);
+	}
+
+	ImGui::Checkbox("AABB", &AABB.render);
+	if (AABB.render)
+	{
+		ImGui::DragFloat4("Color", &AABB.color.r, 0.1f);
+		ImGui::DragFloat3("Max", &AABB.position.x, 0.1f);
+		ImGui::DragFloat3("Min", &AABB.size.x, 0.1f);
+		SimpleDraw::AddAABB(AABB.size, AABB.position, AABB.color);
+	}
+
+	ImGui::Checkbox("Filled AABB", &FilledAABB.render);
+	if (FilledAABB.render)
+	{
+		ImGui::DragFloat4("Color", &FilledAABB.color.r, 0.1f);
+		ImGui::DragFloat3("Max", &FilledAABB.position.x, 0.1f);
+		ImGui::DragFloat3("Min", &FilledAABB.size.x, 0.1f);
+		SimpleDraw::AddFilledAABB(FilledAABB.size, FilledAABB.position, FilledAABB.color);
+	}
+
+	ImGui::End();
+
+
+	
+	SimpleDraw::Render(camera);
+}
+
 void GameState::Initialize()
 {
 	
@@ -39,6 +77,8 @@ void GameState::Initialize()
 	vertexShader.Initalize<VertexPX>(shaderFile);
 	pixelShader.Initalize(shaderFile);
 	constantBuffer.Initialize(sizeof(Matrix4));
+
+
 }
 
 void GameState::Terminate()
