@@ -35,7 +35,8 @@ void GameState::RenderMesh(Camera& camera, const float& aspectRatio, const bool&
 	meshBuffer.Render();*/
 
 	skySphere.Render(camera, constantBuffer, aspectRatio, usetransfrom);
-	earth.Render(camera, constantBuffer, aspectRatio, usetransfrom);
+	for (auto& [name, planet] : planets)
+		planet.Render(camera, constantBuffer, aspectRatio, usetransfrom);
 }
 
 void GameState::DebugUI()
@@ -44,9 +45,9 @@ void GameState::DebugUI()
 
 	ImGui::DragFloat("Sensitivity", &sensitivity, 0.02f, 0, 5.f);
 	ImGui::DragFloat("WalkSpeed", &walkSpeed, 0.02f, 0, sprintSpeed);
-	ImGui::DragFloat("SprintSpeed", &sprintSpeed, 0.02f, 0, 10.f);
+	ImGui::DragFloat("SprintSpeed", &sprintSpeed, 0.02f, 0, 50.f);
 
-	ImGui::Checkbox("Sphere", &Sphere.render);
+	/*ImGui::Checkbox("Sphere", &Sphere.render);
 	if (Sphere.render)
 	{
 		ImGui::ColorEdit4("Color0", &Sphere.color.r, 0.1f);
@@ -71,22 +72,28 @@ void GameState::DebugUI()
 		ImGui::DragFloat3("Max2", &FilledAABB.position.x, 0.1f);
 		ImGui::DragFloat3("Min2", &FilledAABB.size.x, 0.1f);
 		SimpleDraw::AddFilledAABB(FilledAABB.size, FilledAABB.position, FilledAABB.color);
-	}
+	}*/
 
 	ImGui::Text("Render Tagret");
 	ImGui::Image(mRenderTarget.GetRawData(), { 128, 128 }, { 0, 0 }, { 1, 1 }, {1, 1, 1, 1}, {1, 1, 1, 1});
 
+	ImGui::Checkbox("Draw Orbits", &Planet::DEBUG_DRAW);
+	ImGui::DragFloat("Planet Speed", &Planet::EARTH_SPEED, 0.05f);
+	ImGui::DragFloat("Planet Rotation", &Planet::EARTH_ROTATION, 0.01f);
+	ImGui::DragFloat("Planet Orbit", &Planet::EARTH_ORBIT, 0.1f);
+
+	for (auto& planet : planets)
+		if (ImGui::Button(planet.first.c_str(), { 150, 65 }))
+			planet.second.SetTarget();
+
 	ImGui::End();
 
-
-	SimpleDraw::AddCircle(30, 3, {}, Colors::Black);
 	SimpleDraw::Render(camera);
 }
 
 void GameState::Initialize()
 {
-	
-	camera.SetPosition(Vector3( 0, 1, -3 ));
+	camera.SetPosition(Vector3( 0, 1, -15 ));
 	camera.SetLookAt(Vector3::Zero);
 
 	mRenderTargetCamera.SetPosition(Vector3(0, 1, -3));
@@ -108,7 +115,29 @@ void GameState::Initialize()
 	mRenderTarget.Initialize(512, 512, NEng::Texture::Format::RGBA_U32);
 
 	skySphere.Initialize();
-	earth.Initialize();
+	
+	const vector<string> names = {"sun", "mercury", "venus", "earth", "mars", "jupiter", "saturn", "uranus", "neptune", "pluto"};
+	
+
+	for (int i = 0; i < names.size(); i++)
+		planets.insert({ names[i], Planet("../../Assets/Images/planets/" + names[i] + ".jpg", (Planet::Type)i)});
+
+
+
+	planets.at("sun").Initialize(0.1f, 0, 0, 0);
+	planets.at("earth").Initialize(1, 1, 1, 1);
+
+	planets.at("mercury") .Initialize(0.38f, 0.387f, 0.241f, 59.0f);
+	planets.at("venus")   .Initialize(0.95f, 0.723f, 0.615f, 243.f);
+	planets.at("mars")	  .Initialize(0.53f, 1.524f, 1.881f, 0.97f);
+	planets.at("jupiter") .Initialize(11.2f, 5.203f, 11.86f, 0.41f);
+	planets.at("saturn")  .Initialize(9.42f, 6.582f, 29.46f, 0.44f);
+	planets.at("uranus")  .Initialize(4.00f, 8.18f, 84.32f, 0.72f);
+	planets.at("neptune") .Initialize(3.88f, 9.07f, 165.1f, 0.67f);
+	planets.at("pluto")   .Initialize(1/6.f, 11.48f, 262.8f, 6.39f);
+
+	
+	
 }
 
 void GameState::Terminate()
@@ -122,7 +151,9 @@ void GameState::Terminate()
 	//mDiffuseTexture.Terminate();
 	mRenderTarget.Terminate();
 	skySphere.Terminate();
-	earth.Terminate();
+
+	for (auto& [name, planet] : planets)
+		planet.Terminate();
 }
 
 void GameState::Update(float deltaTime)
@@ -137,6 +168,7 @@ void GameState::Update(float deltaTime)
 
 	const float moveSpeed = (input->IsKeyDown(KeyCode::LSHIFT) ? sprintSpeed : walkSpeed) * deltaTime;
 	const float turnSpeed = sensitivity * deltaTime;
+
 	if (input->IsKeyDown(KeyCode::W))
 	{
 		camera.Walk(moveSpeed);
@@ -166,5 +198,10 @@ void GameState::Update(float deltaTime)
 		camera.Yaw(input->GetMouseMoveX() * turnSpeed);
 		camera.Pitch(input->GetMouseMoveY() * turnSpeed);
 	}
+
+	for (auto& [name, planet] : planets)
+		planet.Update(deltaTime);
 	
+	mRenderTargetCamera.SetLookAt((Planet::RENDER_LOOK));
+	mRenderTargetCamera.SetPosition((Planet::RENDER_POSITION));
 }

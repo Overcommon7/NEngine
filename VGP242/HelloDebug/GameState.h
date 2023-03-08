@@ -43,15 +43,15 @@ protected:
 	ConstantBuffer constantBuffer;
 
 	float sensitivity = 0.75f;
-	float walkSpeed = 2.f;
-	float sprintSpeed = 5.f;
+	float walkSpeed = 20.f;
+	float sprintSpeed = 40.f;
 
 	//Texture mDiffuseTexture;
 	Sampler mSampler;
 	RenderTarget mRenderTarget;
 
 	SkySphere skySphere;
-	Earth earth;
+	unordered_map<string, Planet> planets;
 
 	std::filesystem::path shaderFile = "../../Assets/Shaders/DoTexturing.fx";
 	std::filesystem::path texturePath = "../../Assets/Textures/earth.jpg";

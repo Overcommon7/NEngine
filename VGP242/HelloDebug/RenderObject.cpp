@@ -4,10 +4,10 @@ using namespace NEng;
 
 void SkySphere::Initialize()
 {
-	auto sphere = MeshBuilder::CreateSkySpherePX(100, 100, 100);
+	auto sphere = MeshBuilder::CreateSkySpherePX(1000, 1000, 1000);
 	mMeshBuffer.Initialize(sphere);
 
-	mDiffuseTexture.Initialize("../../Assets/Images/skysphere/sunrise.jpg");
+	mDiffuseTexture.Initialize("../../Assets/Images/skysphere/space.jpg");
 	mTransform = Matrix4::Identity;
 }
 
@@ -23,8 +23,6 @@ void SkySphere::Render(NEng::Camera& camera, NEng::ConstantBuffer& constantBuffe
 
 	camera.SetAspectRatio(acpectRatio);
 
-	
-
 	Matrix4 matWorld = usetransform ? mTransform : Matrix4::Identity;
 	Matrix4 matFinal = (matWorld * camera.GetViewMatrix() * camera.GetProjectionMatrix()).Transpose();
 
@@ -36,28 +34,31 @@ void SkySphere::Render(NEng::Camera& camera, NEng::ConstantBuffer& constantBuffe
 	Texture::UnbindPS(0);
 }
 
-void SkySphere::Update(float deltaTime)
+
+
+void Planet::Initialize(float relativeSize, float relativeSpeed, float relativeOrbit, float relativeRotation)
 {
-}
+	slices = 30 * relativeSize;
+	rings = 30 * relativeSize;
 
-
-
-void Earth::Initialize()
-{
-	auto sphere = MeshBuilder::CreateSpherePX(30, 30, 1);
+	auto sphere = MeshBuilder::CreateSpherePX(slices, rings, EARTH_RADIUS * relativeSize);
 	mMeshBuffer.Initialize(sphere);
 
-	mDiffuseTexture.Initialize("../../Assets/Textures/earth.jpg");
+	mDiffuseTexture.Initialize(filepath);
 	mTransform = Matrix4::Identity;
+
+	orbit = relativeOrbit;
+	moveSpeed = relativeSpeed;
+	rotation = (1 / relativeRotation);
 }
 
-void Earth::Terminate()
+void Planet::Terminate()
 {
 	mDiffuseTexture.Terminate();
 	mMeshBuffer.Terminate();
 }
 
-void Earth::Render(NEng::Camera& camera, NEng::ConstantBuffer& constantBuffer, const float& acpectRatio, bool usetransform)
+void Planet::Render(NEng::Camera& camera, NEng::ConstantBuffer& constantBuffer, const float& acpectRatio, bool usetransform)
 {
 	mDiffuseTexture.BindPS(0);
 
@@ -74,6 +75,23 @@ void Earth::Render(NEng::Camera& camera, NEng::ConstantBuffer& constantBuffer, c
 	Texture::UnbindPS(0);
 }
 
-void Earth::Update(float deltaTime)
+void Planet::Update(float deltaTime)
 {
+	SetPosition({ 0, 0, 0 });
+	angle += moveSpeed * deltaTime * EARTH_SPEED;
+	Vector3 coord = { cos(angle) * orbit * EARTH_ORBIT, 0, sin(angle) * orbit * EARTH_ORBIT };
+	mTransform *= Matrix4::Translation(coord) * Matrix4::RotationY(PI * (EARTH_ROTATION * rotation) *deltaTime);
+
+	if (FOLLOW_TARGET == type)
+	{
+		RENDER_POSITION = coord;
+		RENDER_LOOK = coord;
+		RENDER_POSITION.z -= EARTH_RADIUS * size * 1.25f;
+		RENDER_LOOK.z += EARTH_RADIUS * size * 1.25f;
+	}
+		
+
+	if (DEBUG_DRAW)
+		SimpleDraw::AddCircle(slices, orbit * EARTH_ORBIT, { 0, 0, 0 }, Colors::HotPink);
 }
+																			  
