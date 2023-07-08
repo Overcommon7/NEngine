@@ -34,7 +34,7 @@ namespace NEng
 
 		void SetTopology(const Topology& topology);
 		void Update(void* verticies, uint32_t vertexCount);
-		void Render();
+		void Render() const;
 
 	private:
 

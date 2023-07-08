@@ -26,7 +26,7 @@ namespace NEng
 		else if (topology == Topology::Lines)
 			this->topology = D3D11_PRIMITIVE_TOPOLOGY_LINELIST;
 	}
-	void MeshBuffer::Render()
+	void MeshBuffer::Render() const
 	{
 		auto context = GraphicsSystem::Get()->GetContext();
 

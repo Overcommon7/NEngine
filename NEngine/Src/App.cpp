@@ -18,6 +18,7 @@ namespace NEng
 		GraphicsSystem::StaticInitialize(window.wnd, false);
 		SimpleDraw::Initialize(AppConfig::DebugDrawLimit);
 		DebugUI::StaticInitialize(window.wnd, false, true);
+		TextureManager::StaticInitialize("../../Assets/Textures/");
 		auto input = Input::InputSystem::Get();
 
 		mCurrentState->Initialize();
@@ -60,6 +61,7 @@ namespace NEng
 		}
 		mCurrentState->Terminate();
 
+		TextureManager::StaticTerminate();
 		SimpleDraw::Terminate();
 		DebugUI::StaticTerminate();
 		Input::InputSystem::StaticTerminate();

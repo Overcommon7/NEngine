@@ -17,6 +17,7 @@ namespace NEng
 		static MeshPC CreatePlanePC(int numRows, int numCols, float spacing);
 		static MeshPC CreateCylinderPC(int slices, int rings);
 
+		static Mesh CreateSphere(int slices, int rings, float radius);
 		static MeshPC CreateSpherePC(int slices, int rings, float radius);
 		static MeshPX CreateSpherePX(int slices, int rings, float radius);
 		static MeshPX CreateSkySpherePX(int slices, int rings, float radius);

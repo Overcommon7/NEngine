@@ -113,21 +113,21 @@ namespace
 
 	void CreatePlaneIndicies(vector<uint32_t>& indices, int numRows, int numColunms)
 	{
-		for (int r = 0; r <= numRows; ++r)
+		for (int r = 0; r < numRows; ++r)
 		{
 			for (int c = 0; c < numColunms; ++c)
 			{
-				int i = (r * numColunms) + c;
+				int i = (r * (numColunms + 1)) + c;
 
 				//triangle 1
 				indices.push_back(i);
-				indices.push_back(i + numColunms + 1);
+				indices.push_back(i + numColunms + 2);
 				indices.push_back(i + 1);
 
 				//triangle 2
 				indices.push_back(i);
-				indices.push_back(i + numColunms);
 				indices.push_back(i + numColunms + 1);
+				indices.push_back(i + numColunms + 2);
 			}
 		}
 	}
@@ -339,6 +339,46 @@ namespace NEng
 
 		return mesh;
 	}
+
+	Mesh MeshBuilder::CreateSphere(int slices, int rings, float radius)
+	{
+		Mesh mesh;
+
+		float vertRotation = PI / float(rings - 1);
+		float horzRotation = TWO_PI / float(slices);
+		float uStep = 1.0f / (float)slices;
+		float vStep = 1.0f / float(rings);
+
+		for (int r = 0; r <= rings; ++r)
+		{
+			float ring = (float)r;
+			float phi = ring * vertRotation;
+
+			for (int s = 0; s <= slices; ++s)
+			{
+				float slice = (float)s;
+				float rotation = slice * horzRotation;
+
+				float u = 1.0f - (uStep * slice);
+				float v = vStep * ring;
+
+				float x = radius * sin(rotation) * sin(phi);
+				float y = radius * cos(phi);
+				float z = radius * cos(rotation) * sin(phi);
+
+				Vector3 pos = { x, y, z };
+				auto norm = pos.Normalize();
+				auto tan = Vector3(-z, 0, x).Normalize();
+
+				mesh.verticies.push_back({ pos, norm, tan, {u, v} });
+			}
+		}
+
+		CreatePlaneIndicies(mesh.indicies, rings, slices);
+
+		return mesh;
+	}
+
 	MeshPX MeshBuilder::CreateSpherePX(int slices, int rings, float radius)
 	{
 		MeshPX mesh;

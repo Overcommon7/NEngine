@@ -17,4 +17,8 @@
 #include "BlendState.h"
 #include "DebugUI.h"
 #include "RenderTarget.h"
+#include "RenderObject.h"
+#include "Transform.h"
+#include "StandardEffect.h"
+#include "TextureManager.h"
 #include <ImGui/Inc/imgui.h>
