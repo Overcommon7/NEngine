@@ -14,6 +14,8 @@ void NEng::TextureManager::StaticInitialize(const std::filesystem::path& root)
 
 void NEng::TextureManager::StaticTerminate()
 {
+	for (auto& [id, texture] : instance->inventory)
+		texture->Terminate();
 	instance.reset();
 }
 

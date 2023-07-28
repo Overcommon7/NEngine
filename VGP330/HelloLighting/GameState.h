@@ -18,8 +18,10 @@ protected:
 	void RenderMesh(Camera& camera, const float& aspectRatio = 0.0f, const bool& usetransfrom = true);
 
 	Camera camera;
+	DirectionalLight directionalLight;
 	StandardEffect standardEffect;
 	RenderObject renderObject;
+	RenderTarget renderTarget;
 
 	float sensitivity = 0.35;
 	float walkSpeed = 10;
