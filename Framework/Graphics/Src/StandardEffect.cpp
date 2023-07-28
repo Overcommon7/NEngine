@@ -46,6 +46,7 @@ void NEng::StandardEffect::Begin()
 	materialBuffer.BindPS(2);
 
 	settingsBuffer.BindPS(3);
+	settingsBuffer.BindVS(3);
 
 	sampler.BindPS(0);
 	sampler.BindVS(0);
@@ -71,6 +72,11 @@ void NEng::StandardEffect::Render(const RenderObject& renderObject)
 	SettingsData settingsData;
 	settingsData.useDiffuseMap = int(this->settingsData.useDiffuseMap && renderObject.diffuseMapID);
 	settingsData.useNormalMap = int(this->settingsData.useNormalMap && renderObject.normalMapID);
+	settingsData.useBumpMap = int(this->settingsData.useBumpMap && renderObject.bumpMapID);
+	settingsData.useSpecMap = int(this->settingsData.useSpecMap && renderObject.specMapID);
+	settingsData.useCelShading = this->settingsData.useCelShading;
+	settingsData.bumpWeight = this->settingsData.bumpWeight;
+	
 
 	transformBuffer.Update(transformData);
 	lightingBuffer.Update(*directionalLight);
@@ -80,6 +86,7 @@ void NEng::StandardEffect::Render(const RenderObject& renderObject)
 	auto tm = TextureManager::Get();
 	tm->BindPS(renderObject.diffuseMapID, 0);
 	tm->BindPS(renderObject.normalMapID, 1);
+	tm->BindVS(renderObject.bumpMapID, 2);
 
 	renderObject.meshBuffer.Render();
 }
@@ -108,5 +115,21 @@ void NEng::StandardEffect::DebugUI()
 		{
 			settingsData.useNormalMap = useNormalMap ? 1 : 0;
 		}
+		bool useBumpMap = (bool)this->settingsData.useBumpMap;
+		if (ImGui::Checkbox("UseBumpMap", &useBumpMap))
+		{
+			settingsData.useBumpMap = useBumpMap ? 1 : 0;
+		}
+		bool useSpecMap = (bool)this->settingsData.useSpecMap;
+		if (ImGui::Checkbox("UseSpecMap", &useSpecMap))
+		{
+			settingsData.useSpecMap = useSpecMap ? 1 : 0;
+		}
+		bool useCelShading = (bool)this->settingsData.useCelShading;
+		if (ImGui::Checkbox("UseCelShading", &useCelShading))
+		{
+			settingsData.useCelShading = useCelShading ? 1 : 0;
+		}
+		ImGui::DragFloat("BumpWeight", &settingsData.bumpWeight, 0.1f, 0.0f, 2.0f);
 	}
 }

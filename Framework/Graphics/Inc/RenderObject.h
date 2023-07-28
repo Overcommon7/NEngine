@@ -20,5 +20,7 @@ namespace NEng
 		MeshBuffer meshBuffer;
 		TextureID diffuseMapID;
 		TextureID normalMapID;
+		TextureID bumpMapID;
+		TextureID specMapID;
 	};
 }

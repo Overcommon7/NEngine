@@ -4,11 +4,13 @@ using namespace NEng::Input;
 
 void GameState::Render()
 {
+	camera.SetAspectRatio(1.0f);
 	renderTarget.BeginRender();
-	standardEffect.Begin();
-	standardEffect.Render(renderObject);
-	standardEffect.End();
+		standardEffect.Begin();
+			standardEffect.Render(renderObject);
+		standardEffect.End();
 	renderTarget.EndRender();
+	camera.SetAspectRatio(0.0f);
 
 	standardEffect.Begin();
 	standardEffect.Render(renderObject);
@@ -75,10 +77,13 @@ void GameState::Initialize()
 	standardEffect.SetCamera(camera);
 	standardEffect.SetDirectionalLight(directionalLight);
 
-	Mesh earth = MeshBuilder::CreateSphere(30, 30, 1);
+	auto tm = TextureManager::Get();
+	Mesh earth = MeshBuilder::CreateSphere(60, 60, 1);
 	renderObject.meshBuffer.Initialize(earth);
-	renderObject.diffuseMapID = TextureManager::Get()->LoadTexture("earth.jpg" );
-	renderObject.normalMapID = TextureManager::Get()->LoadTexture("earth_normal.jpg" );
+	renderObject.diffuseMapID = tm->LoadTexture("earth.jpg" );
+	renderObject.normalMapID = tm->LoadTexture("earth_normal.jpg" );
+	renderObject.bumpMapID = tm->LoadTexture("earth_bump.jpg" );
+	renderObject.specMapID = tm->LoadTexture("earth_spec.jpg" );
 
 	auto gs = GraphicsSystem::Get();
 	gs->SetClearColor(Colors::Black);
