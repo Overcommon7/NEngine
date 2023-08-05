@@ -41,6 +41,9 @@ namespace NEng
 			&errorBlob
 		);
 
+		if (errorBlob)
+			std::cerr << (const char*)errorBlob->GetBufferPointer();
+
 		hr = device->CreateVertexShader(
 			shaderBlob->GetBufferPointer(),
 			shaderBlob->GetBufferSize(),

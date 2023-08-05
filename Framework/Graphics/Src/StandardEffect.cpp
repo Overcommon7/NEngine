@@ -87,6 +87,7 @@ void NEng::StandardEffect::Render(const RenderObject& renderObject)
 	tm->BindPS(renderObject.diffuseMapID, 0);
 	tm->BindPS(renderObject.normalMapID, 1);
 	tm->BindVS(renderObject.bumpMapID, 2);
+	tm->BindPS(renderObject.specMapID, 3);
 
 	renderObject.meshBuffer.Render();
 }

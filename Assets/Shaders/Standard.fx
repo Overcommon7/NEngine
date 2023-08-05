@@ -68,11 +68,11 @@ VS_OUTPUT VS(VS_INPUT input)
     
     if (useBumpMap)
     {
-        float bumpColor = (2.0f * bumpMap.SampleLevel(textureSampler, input.texCoord, 0.0f).r) - 1.0f;
+        float bumpColor = (2.0f * bumpMap.SampleLevel(textureSampler, input.texCoord, 0f).r) - 1.0f;
         localPosition += (input.normal * bumpColor * bumpWeight);
     }
     
-	output.position = mul(float4(input.position, 1.0f), wvp);
+	output.position = mul(float4(localPosition, 1.0f), toNDC);
     output.worldNormal = mul(input.normal, (float3x3) toWorld);
     output.worldTangent = mul(input.tangent, (float3x3) toWorld);
     output.dirToLight = -lightDirection;
